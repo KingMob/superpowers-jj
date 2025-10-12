@@ -41,8 +41,8 @@ Read the introduction: [Superpowers for Claude Code](https://blog.fsck.com/2025/
 
 ```bash
 # In Claude Code
-/plugin marketplace add KingMob/superpowers-marketplace
-/plugin install superpowers@superpowers-marketplace
+/plugin marketplace add KingMob/superpowers-jj-marketplace
+/plugin install superpowers@superpowers-jj-marketplace
 ```
 
 The plugin automatically handles skills repository setup on first run.
@@ -173,5 +173,5 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-- **Issues**: https://github.com/KingMob/superpowers/issues
-- **Marketplace**: https://github.com/KingMob/superpowers-marketplace
+- **Issues**: https://github.com/KingMob/superpowers-jj/issues
+- **Marketplace**: https://github.com/KingMob/superpowers-jj-marketplace

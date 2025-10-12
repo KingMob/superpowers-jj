@@ -6,8 +6,8 @@
     "name": "Jesse Vincent",
     "email": "jesse@fsck.com"
   },
-  "homepage": "https://github.com/KingMob/superpowers",
-  "repository": "https://github.com/KingMob/superpowers",
+  "homepage": "https://github.com/KingMob/superpowers-jj",
+  "repository": "https://github.com/KingMob/superpowers-jj",
   "license": "MIT",
   "keywords": ["skills", "tdd", "debugging", "collaboration", "best-practices", "workflows"],
   "category": "productivity"

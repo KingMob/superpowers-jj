@@ -171,8 +171,8 @@ This release includes:
 
 ```bash
 # In Claude Code
-/plugin marketplace add KingMob/superpowers-marketplace
-/plugin install superpowers@superpowers-marketplace
+/plugin marketplace add KingMob/superpowers-jj-marketplace
+/plugin install superpowers@superpowers-jj-marketplace
 ```
 
 The plugin handles everything automatically.
@@ -226,6 +226,6 @@ None at this time.
 
 ---
 
-**Full Changelog:** https://github.com/KingMob/superpowers/compare/dd013f6...main
+**Full Changelog:** https://github.com/KingMob/superpowers-jj/compare/dd013f6...main
 **Skills Repository:** https://github.com/KingMob/superpowers-skills
-**Issues:** https://github.com/KingMob/superpowers/issues
+**Issues:** https://github.com/KingMob/superpowers-jj/issues
