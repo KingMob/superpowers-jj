@@ -2,16 +2,22 @@
 
 Give Claude Code superpowers with a comprehensive skills library of proven techniques, patterns, and tools.
 
+## Differences from upstream
+
+This is a fork of the original superpowers repo by obra, and almost all credit should go to them. 
+
+The only difference is that I modified it to use Jujutsu (jj) instead of git.
+
 ## Architecture
 
 The superpowers plugin is a minimal shim that:
-- Clones/updates the [superpowers-skills](https://github.com/obra/superpowers-skills) repository to `~/.config/superpowers/skills/`
+- Clones/updates the [superpowers-skills](https://github.com/KingMob/superpowers-skills) repository to `~/.config/superpowers/skills/`
 - Registers hooks that load skills from the local repository
 - Offers users the option to fork the skills repo for contributions
 
-All skills, scripts, and documentation live in the separate [superpowers-skills](https://github.com/obra/superpowers-skills) repository. Edit skills locally, commit changes, and contribute back via pull requests.
+All skills, scripts, and documentation live in the separate [superpowers-skills](https://github.com/KingMob/superpowers-skills) repository. Edit skills locally, commit changes, and contribute back via pull requests.
 
-**Skills Repository:** https://github.com/obra/superpowers-skills
+**Skills Repository:** https://github.com/KingMob/superpowers-skills
 
 ## What You Get
 
@@ -35,7 +41,7 @@ Read the introduction: [Superpowers for Claude Code](https://blog.fsck.com/2025/
 
 ```bash
 # In Claude Code
-/plugin marketplace add obra/superpowers-marketplace
+/plugin marketplace add KingMob/superpowers-marketplace
 /plugin install superpowers@superpowers-marketplace
 ```
 
@@ -64,7 +70,7 @@ If you forked the skills repository during setup, you can contribute improvement
 1. Edit skills in `~/.config/superpowers/skills/`
 2. Commit your changes
 3. Push to your fork
-4. Open a PR to `obra/superpowers-skills`
+4. Open a PR to `KingMob/superpowers-skills`
 
 ## Quick Start
 
@@ -167,5 +173,5 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-- **Issues**: https://github.com/obra/superpowers/issues
-- **Marketplace**: https://github.com/obra/superpowers-marketplace
+- **Issues**: https://github.com/KingMob/superpowers/issues
+- **Marketplace**: https://github.com/KingMob/superpowers-marketplace
