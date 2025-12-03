@@ -1,5 +1,135 @@
 # Superpowers Release Notes
 
+## v3.5.1 (2025-11-24)
+
+### Changed
+
+- **OpenCode Bootstrap Refactor**: Switched from `chat.message` hook to `session.created` event for bootstrap injection
+  - Bootstrap now injects at session creation via `session.prompt()` with `noReply: true`
+  - Explicitly tells the model that using-superpowers is already loaded to prevent redundant skill loading
+  - Consolidated bootstrap content generation into shared `getBootstrapContent()` helper
+  - Cleaner single-implementation approach (removed fallback pattern)
+
+---
+
+## v3.5.0 (2025-11-23)
+
+### Added
+
+- **OpenCode Support**: Native JavaScript plugin for OpenCode.ai
+  - Custom tools: `use_skill` and `find_skills`
+  - Message insertion pattern for skill persistence across context compaction
+  - Automatic context injection via chat.message hook
+  - Auto re-injection on session.compacted events
+  - Three-tier skill priority: project > personal > superpowers
+  - Project-local skills support (`.opencode/skills/`)
+  - Shared core module (`lib/skills-core.js`) for code reuse with Codex
+  - Automated test suite with proper isolation (`tests/opencode/`)
+  - Platform-specific documentation (`docs/README.opencode.md`, `docs/README.codex.md`)
+
+### Changed
+
+- **Refactored Codex Implementation**: Now uses shared `lib/skills-core.js` ES module
+  - Eliminates code duplication between Codex and OpenCode
+  - Single source of truth for skill discovery and parsing
+  - Codex successfully loads ES modules via Node.js interop
+
+- **Improved Documentation**: Rewrote README to explain problem/solution clearly
+  - Removed duplicate sections and conflicting information
+  - Added complete workflow description (brainstorm → plan → execute → finish)
+  - Simplified platform installation instructions
+  - Emphasized skill-checking protocol over automatic activation claims
+
+---
+
+## v3.4.1 (2025-10-31)
+
+### Improvements
+
+- Optimized superpowers bootstrap to eliminate redundant skill execution. The `using-superpowers` skill content is now provided directly in session context, with clear guidance to use the Skill tool only for other skills. This reduces overhead and prevents the confusing loop where agents would execute `using-superpowers` manually despite already having the content from session start.
+
+## v3.4.0 (2025-10-30)
+
+### Improvements
+
+- Simplified `brainstorming` skill to return to original conversational vision. Removed heavyweight 6-phase process with formal checklists in favor of natural dialogue: ask questions one at a time, then present design in 200-300 word sections with validation. Keeps documentation and implementation handoff features.
+
+## v3.3.1 (2025-10-28)
+
+### Improvements
+
+- Updated `brainstorming` skill to require autonomous recon before questioning, encourage recommendation-driven decisions, and prevent agents from delegating prioritization back to humans.
+- Applied writing clarity improvements to `brainstorming` skill following Strunk's "Elements of Style" principles (omitted needless words, converted negative to positive form, improved parallel construction).
+
+### Bug Fixes
+
+- Clarified `writing-skills` guidance so it points to the correct agent-specific personal skill directories (`~/.claude/skills` for Claude Code, `~/.codex/skills` for Codex).
+
+## v3.3.0 (2025-10-28)
+
+### New Features
+
+**Experimental Codex Support**
+- Added unified `superpowers-codex` script with bootstrap/use-skill/find-skills commands
+- Cross-platform Node.js implementation (works on Windows, macOS, Linux)
+- Namespaced skills: `superpowers:skill-name` for superpowers skills, `skill-name` for personal
+- Personal skills override superpowers skills when names match
+- Clean skill display: shows name/description without raw frontmatter
+- Helpful context: shows supporting files directory for each skill
+- Tool mapping for Codex: TodoWrite→update_plan, subagents→manual fallback, etc.
+- Bootstrap integration with minimal AGENTS.md for automatic startup
+- Complete installation guide and bootstrap instructions specific to Codex
+
+**Key differences from Claude Code integration:**
+- Single unified script instead of separate tools
+- Tool substitution system for Codex-specific equivalents
+- Simplified subagent handling (manual work instead of delegation)
+- Updated terminology: "Superpowers skills" instead of "Core skills"
+
+### Files Added
+- `codex/INSTALL.md` - Installation guide for Codex users
+- `codex/superpowers-bootstrap.md` - Bootstrap instructions with Codex adaptations
+- `scripts/superpowers-codex` - Unified Node.js executable with all functionality
+
+**Note:** Codex support is experimental. The integration provides core superpowers functionality but may require refinement based on user feedback.
+
+## v3.2.3 (2025-10-23)
+
+### Improvements
+
+**Updated using-superpowers skill to use Skill tool instead of Read tool**
+- Changed skill invocation instructions from Read tool to Skill tool
+- Updated description: "using Read tool" → "using Skill tool"
+- Updated step 3: "Use the Read tool" → "Use the Skill tool to read and run"
+- Updated rationalization list: "Read the current version" → "Run the current version"
+
+The Skill tool is the proper mechanism for invoking skills in Claude Code. This update corrects the bootstrap instructions to guide agents toward the correct tool.
+
+### Files Changed
+- Updated: `skills/using-superpowers/SKILL.md` - Changed tool references from Read to Skill
+
+## v3.2.2 (2025-10-21)
+
+### Improvements
+
+**Strengthened using-superpowers skill against agent rationalization**
+- Added EXTREMELY-IMPORTANT block with absolute language about mandatory skill checking
+  - "If even 1% chance a skill applies, you MUST read it"
+  - "You do not have a choice. You cannot rationalize your way out."
+- Added MANDATORY FIRST RESPONSE PROTOCOL checklist
+  - 5-step process agents must complete before any response
+  - Explicit "responding without this = failure" consequence
+- Added Common Rationalizations section with 8 specific evasion patterns
+  - "This is just a simple question" → WRONG
+  - "I can check files quickly" → WRONG
+  - "Let me gather information first" → WRONG
+  - Plus 5 more common patterns observed in agent behavior
+
+These changes address observed agent behavior where they rationalize around skill usage despite clear instructions. The forceful language and pre-emptive counter-arguments aim to make non-compliance harder.
+
+### Files Changed
+- Updated: `skills/using-superpowers/SKILL.md` - Added three layers of enforcement to prevent skill-skipping rationalization
+
 ## v3.2.1 (2025-10-20)
 
 ### New Features
@@ -136,7 +266,7 @@ We now use Anthropic's first-party skills system!
 
 Superpowers v2.0 makes skills more accessible, maintainable, and community-driven through a major architectural shift.
 
-The headline change is **skills repository separation**: all skills, scripts, and documentation have moved from the plugin into a dedicated repository ([KingMob/superpowers-skills](https://github.com/KingMob/superpowers-skills)). This transforms superpowers from a monolithic plugin into a lightweight shim that manages a local clone of the skills repository. Skills auto-update on session start. Users fork and contribute improvements via standard git workflows. The skills library versions independently from the plugin.
+The headline change is **skills repository separation**: all skills, scripts, and documentation have moved from the plugin into a dedicated repository ([obra/superpowers-skills](https://github.com/obra/superpowers-skills)). This transforms superpowers from a monolithic plugin into a lightweight shim that manages a local clone of the skills repository. Skills auto-update on session start. Users fork and contribute improvements via standard git workflows. The skills library versions independently from the plugin.
 
 Beyond infrastructure, this release adds nine new skills focused on problem-solving, research, and architecture. We rewrote the core **using-skills** documentation with imperative tone and clearer structure, making it easier for Claude to understand when and how to use skills. **find-skills** now outputs paths you can paste directly into the Read tool, eliminating friction in the skills discovery workflow.
 
@@ -146,7 +276,7 @@ Users experience seamless operation: the plugin handles cloning, forking, and up
 
 ### Skills Repository Separation
 
-**The biggest change:** Skills no longer live in the plugin. They've been moved to a separate repository at [KingMob/superpowers-skills](https://github.com/KingMob/superpowers-skills).
+**The biggest change:** Skills no longer live in the plugin. They've been moved to a separate repository at [obra/superpowers-skills](https://github.com/obra/superpowers-skills).
 
 **What this means for you:**
 
@@ -161,7 +291,7 @@ Users experience seamless operation: the plugin handles cloning, forking, and up
 If you have an existing installation:
 1. Your old `~/.config/superpowers/.git` will be backed up to `~/.config/superpowers/.git.bak`
 2. Old skills will be backed up to `~/.config/superpowers/skills.bak`
-3. Fresh clone of KingMob/superpowers-skills will be created at `~/.config/superpowers/skills/`
+3. Fresh clone of obra/superpowers-skills will be created at `~/.config/superpowers/skills/`
 
 ### Removed Features
 
@@ -173,7 +303,7 @@ If you have an existing installation:
 ### Skills Repository Infrastructure
 
 **Automatic Clone & Setup** (`lib/initialize-skills.sh`)
-- Clones KingMob/superpowers-skills on first run
+- Clones obra/superpowers-skills on first run
 - Offers fork creation if GitHub CLI is installed
 - Sets up upstream/origin remotes correctly
 - Handles migration from old installation
@@ -278,8 +408,8 @@ If you have an existing installation:
 - `.claude-plugin/marketplace.json` - Local testing config
 
 **Removed:**
-- `skills/` directory (82 files) - Now in KingMob/superpowers-skills
-- `scripts/` directory - Now in KingMob/superpowers-skills/skills/using-skills/
+- `skills/` directory (82 files) - Now in obra/superpowers-skills
+- `scripts/` directory - Now in obra/superpowers-skills/skills/using-skills/
 - `hooks/setup-personal-superpowers.sh` - Obsolete
 
 **Modified:**
@@ -342,7 +472,7 @@ The plugin handles everything automatically.
 
 ### For Contributors
 
-- Skills repository is now at https://github.com/KingMob/superpowers-skills
+- Skills repository is now at https://github.com/obra/superpowers-skills
 - Fork → Branch → PR workflow
 - See skills/meta/writing-skills/SKILL.md for TDD approach to documentation
 
