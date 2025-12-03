@@ -1,15 +1,15 @@
 ---
 name: sharing-skills
-description: Use when you've developed a broadly useful skill and want to contribute it upstream via pull request - guides process of branching, committing, pushing, and creating PR to contribute skills back to upstream repository
+description: Use when you've developed a broadly useful skill and want to contribute it upstream via pull request - guides process of creating bookmark, committing, pushing, and creating PR to contribute skills back to upstream repository
 ---
 
 # Sharing Skills
 
 ## Overview
 
-Contribute skills from your local branch back to the upstream repository.
+Contribute skills from your local repository back to the upstream repository.
 
-**Workflow:** Branch → Edit/Create skill → Commit → Push → PR
+**Workflow:** Bookmark → Edit/Create skill → Commit → Push → PR
 
 ## When to Share
 
@@ -33,21 +33,22 @@ Contribute skills from your local branch back to the upstream repository.
 
 ## Sharing Workflow
 
-### 1. Ensure You're on Main and Synced
+### 1. Ensure You're Synced with Upstream
 
 ```bash
 cd ~/.config/superpowers/skills/
-git checkout main
-git pull upstream main
-git push origin main  # Push to your fork
+jj git fetch --remote upstream
+jj new main
+jj git push --remote origin --bookmark main
 ```
 
-### 2. Create Feature Branch
+### 2. Create Feature Bookmark
 
 ```bash
-# Branch name: add-skillname-skill
+# Bookmark name: add-skillname-skill
 skill_name="your-skill-name"
-git checkout -b "add-${skill_name}-skill"
+jj new
+jj bookmark create "add-${skill_name}-skill"
 ```
 
 ### 3. Create or Edit Skill
@@ -61,9 +62,8 @@ git checkout -b "add-${skill_name}-skill"
 ### 4. Commit Changes
 
 ```bash
-# Add and commit
-git add skills/your-skill-name/
-git commit -m "Add ${skill_name} skill
+# Commit
+jj commit -m "Add ${skill_name} skill
 
 $(cat <<'EOF'
 Brief description of what this skill does and why it's useful.
@@ -76,7 +76,7 @@ EOF
 ### 5. Push to Your Fork
 
 ```bash
-git push -u origin "add-${skill_name}-skill"
+jj git push --bookmark "add-${skill_name}-skill"
 ```
 
 ### 6. Create Pull Request
@@ -106,26 +106,26 @@ Here's a complete example of sharing a skill called "async-patterns":
 ```bash
 # 1. Sync with upstream
 cd ~/.config/superpowers/skills/
-git checkout main
-git pull upstream main
-git push origin main
+jj git fetch --remote upstream
+jj new main
+jj git push --remote origin --bookmark main
 
-# 2. Create branch
-git checkout -b "add-async-patterns-skill"
+# 2. Create bookmark
+jj new
+jj bookmark create "add-async-patterns-skill"
 
 # 3. Create/edit the skill
 # (Work on skills/async-patterns/SKILL.md)
 
 # 4. Commit
-git add skills/async-patterns/
-git commit -m "Add async-patterns skill
+jj commit -m "Add async-patterns skill
 
 Patterns for handling asynchronous operations in tests and application code.
 
 Tested with: Multiple pressure scenarios testing agent compliance."
 
 # 5. Push
-git push -u origin "add-async-patterns-skill"
+jj git push --bookmark "add-async-patterns-skill"
 
 # 6. Create PR
 gh pr create \
@@ -145,18 +145,18 @@ Addresses common async pitfalls like race conditions, improper error handling, a
 
 Once your PR is merged:
 
-1. Sync your local main branch:
+1. Sync your local main bookmark:
 ```bash
 cd ~/.config/superpowers/skills/
-git checkout main
-git pull upstream main
-git push origin main
+jj git fetch --remote upstream
+jj new main
+jj git push --remote origin --bookmark main
 ```
 
-2. Delete the feature branch:
+2. Delete the feature bookmark:
 ```bash
-git branch -d "add-${skill_name}-skill"
-git push origin --delete "add-${skill_name}-skill"
+jj bookmark delete "add-${skill_name}-skill"
+jj git push --remote origin --deleted
 ```
 
 ## Troubleshooting
@@ -174,16 +174,16 @@ git push origin --delete "add-${skill_name}-skill"
 - Consider different skill name or coordinate with the skill's maintainer
 
 **PR merge conflicts**
-- Rebase on latest upstream: `git fetch upstream && git rebase upstream/main`
+- Rebase on latest upstream: `jj git fetch --remote upstream` then `jj rebase -d upstream/main`
 - Resolve conflicts
-- Force push: `git push -f origin your-branch`
+- Push rebased bookmark: `jj git push --bookmark your-bookmark`
 
 ## Multi-Skill Contributions
 
 **Do NOT batch multiple skills in one PR.**
 
 Each skill should:
-- Have its own feature branch
+- Have its own feature bookmark
 - Have its own PR
 - Be independently reviewable
 

@@ -79,7 +79,7 @@ function runBootstrap() {
         console.log('## Update Available');
         console.log('');
         console.log('⚠️  Your superpowers installation is behind the latest version.');
-        console.log('To update, run: `cd ~/.codex/superpowers && git pull`');
+        console.log('To update, run: `cd ~/.codex/superpowers && jj git fetch && jj rebase -d main@origin`');
         console.log('');
         console.log('---');
         console.log('');

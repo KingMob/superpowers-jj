@@ -1,17 +1,17 @@
 ---
-name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+name: using-jj-workspaces
+description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated jj workspaces with smart directory selection and safety verification
 ---
 
-# Using Git Worktrees
+# Using Jujutsu Workspaces
 
 ## Overview
 
-Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching.
+Jujutsu workspaces create isolated working copies sharing the same repository, allowing work on multiple features simultaneously without switching.
 
 **Core principle:** Systematic directory selection + safety verification = reliable isolation.
 
-**Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
+**Announce at start:** "I'm using the using-jj-workspaces skill to set up an isolated workspace."
 
 ## Directory Selection Process
 
@@ -21,16 +21,16 @@ Follow this priority order:
 
 ```bash
 # Check in priority order
-ls -d .worktrees 2>/dev/null     # Preferred (hidden)
-ls -d worktrees 2>/dev/null      # Alternative
+ls -d .workspaces 2>/dev/null     # Preferred (hidden)
+ls -d workspaces 2>/dev/null      # Alternative
 ```
 
-**If found:** Use that directory. If both exist, `.worktrees` wins.
+**If found:** Use that directory. If both exist, `.workspaces` wins.
 
 ### 2. Check CLAUDE.md
 
 ```bash
-grep -i "worktree.*director" CLAUDE.md 2>/dev/null
+grep -i "workspace.*director" CLAUDE.md 2>/dev/null
 ```
 
 **If preference specified:** Use it without asking.
@@ -40,35 +40,35 @@ grep -i "worktree.*director" CLAUDE.md 2>/dev/null
 If no directory exists and no CLAUDE.md preference:
 
 ```
-No worktree directory found. Where should I create worktrees?
+No workspace directory found. Where should I create workspaces?
 
-1. .worktrees/ (project-local, hidden)
-2. ~/.config/superpowers/worktrees/<project-name>/ (global location)
+1. .workspaces/ (project-local, hidden)
+2. ~/.jj-workspaces/<project-name>/ (global location)
 
 Which would you prefer?
 ```
 
 ## Safety Verification
 
-### For Project-Local Directories (.worktrees or worktrees)
+### For Project-Local Directories (.workspaces or workspaces)
 
-**MUST verify .gitignore before creating worktree:**
+**MUST verify .gitignore before creating workspace:**
 
 ```bash
 # Check if directory pattern in .gitignore
-grep -q "^\.worktrees/$" .gitignore || grep -q "^worktrees/$" .gitignore
+grep -q "^\.workspaces/$" .gitignore || grep -q "^workspaces/$" .gitignore
 ```
 
 **If NOT in .gitignore:**
 
-Per Jesse's rule "Fix broken things immediately":
+Per Matthew's rule "Fix broken things immediately":
 1. Add appropriate line to .gitignore
 2. Commit the change
-3. Proceed with worktree creation
+3. Proceed with workspace creation
 
-**Why critical:** Prevents accidentally committing worktree contents to repository.
+**Why critical:** Prevents accidentally committing workspace contents to repository.
 
-### For Global Directory (~/.config/superpowers/worktrees)
+### For Global Directory (~/.jj-workspaces)
 
 No .gitignore verification needed - outside project entirely.
 
@@ -77,24 +77,24 @@ No .gitignore verification needed - outside project entirely.
 ### 1. Detect Project Name
 
 ```bash
-project=$(basename "$(git rev-parse --show-toplevel)")
+project=$(basename "$(jj workspace root)")
 ```
 
-### 2. Create Worktree
+### 2. Create Workspace
 
 ```bash
 # Determine full path
 case $LOCATION in
-  .worktrees|worktrees)
-    path="$LOCATION/$BRANCH_NAME"
+  .workspaces|workspaces)
+    path="$LOCATION/$WORKSPACE_NAME"
     ;;
-  ~/.config/superpowers/worktrees/*)
-    path="~/.config/superpowers/worktrees/$project/$BRANCH_NAME"
+  ~/.jj-workspaces/*)
+    path="~/.jj-workspaces/$project/$WORKSPACE_NAME"
     ;;
 esac
 
-# Create worktree with new branch
-git worktree add "$path" -b "$BRANCH_NAME"
+# Create workspace
+jj workspace add "$path"
 cd "$path"
 ```
 
@@ -119,7 +119,7 @@ if [ -f go.mod ]; then go mod download; fi
 
 ### 4. Verify Clean Baseline
 
-Run tests to ensure worktree starts clean:
+Run tests to ensure workspace starts clean:
 
 ```bash
 # Examples - use project-appropriate command
@@ -136,7 +136,7 @@ go test ./...
 ### 5. Report Location
 
 ```
-Worktree ready at <full-path>
+Workspace ready at <full-path>
 Tests passing (<N> tests, 0 failures)
 Ready to implement <feature-name>
 ```
@@ -145,9 +145,9 @@ Ready to implement <feature-name>
 
 | Situation | Action |
 |-----------|--------|
-| `.worktrees/` exists | Use it (verify .gitignore) |
-| `worktrees/` exists | Use it (verify .gitignore) |
-| Both exist | Use `.worktrees/` |
+| `.workspaces/` exists | Use it (verify .gitignore) |
+| `workspaces/` exists | Use it (verify .gitignore) |
+| Both exist | Use `.workspaces/` |
 | Neither exists | Check CLAUDE.md → Ask user |
 | Directory not in .gitignore | Add it immediately + commit |
 | Tests fail during baseline | Report failures + ask |
@@ -156,8 +156,8 @@ Ready to implement <feature-name>
 ## Common Mistakes
 
 **Skipping .gitignore verification**
-- **Problem:** Worktree contents get tracked, pollute git status
-- **Fix:** Always grep .gitignore before creating project-local worktree
+- **Problem:** Workspace contents get tracked, pollute jj status
+- **Fix:** Always grep .gitignore before creating project-local workspace
 
 **Assuming directory location**
 - **Problem:** Creates inconsistency, violates project conventions
@@ -174,15 +174,15 @@ Ready to implement <feature-name>
 ## Example Workflow
 
 ```
-You: I'm using the using-git-worktrees skill to set up an isolated workspace.
+You: I'm using the using-jj-workspaces skill to set up an isolated workspace.
 
-[Check .worktrees/ - exists]
-[Verify .gitignore - contains .worktrees/]
-[Create worktree: git worktree add .worktrees/auth -b feature/auth]
+[Check .workspaces/ - exists]
+[Verify .gitignore - contains .workspaces/]
+[Create workspace: jj workspace add .workspaces/auth]
 [Run npm install]
 [Run npm test - 47 passing]
 
-Worktree ready at /Users/jesse/myproject/.worktrees/auth
+Workspace ready at /Users/matthew/myproject/.workspaces/auth
 Tests passing (47 tests, 0 failures)
 Ready to implement auth feature
 ```
@@ -190,7 +190,7 @@ Ready to implement auth feature
 ## Red Flags
 
 **Never:**
-- Create worktree without .gitignore verification (project-local)
+- Create workspace without .gitignore verification (project-local)
 - Skip baseline test verification
 - Proceed with failing tests without asking
 - Assume directory location when ambiguous
@@ -210,4 +210,4 @@ Ready to implement auth feature
 
 **Pairs with:**
 - **finishing-a-development-branch** - REQUIRED for cleanup after work complete
-- **executing-plans** or **subagent-driven-development** - Work happens in this worktree
+- **executing-plans** or **subagent-driven-development** - Work happens in this workspace

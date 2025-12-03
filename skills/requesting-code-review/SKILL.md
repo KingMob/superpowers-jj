@@ -23,10 +23,18 @@ Dispatch superpowers:code-reviewer subagent to catch issues before they cascade.
 
 ## How to Request
 
-**1. Get git SHAs:**
+**1. Get change IDs:**
+
+For reviewing just the current change:
 ```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
-HEAD_SHA=$(git rev-parse HEAD)
+jj diff -r @
+```
+
+For reviewing a range of changes (e.g., from a specific starting point):
+```bash
+# Find base by description, bookmark, or other revset
+BASE_ID=$(jj log -r 'description("Task 1")' -T 'change_id' --no-graph | head -1)
+HEAD_ID=$(jj log -r @ -T 'change_id' --no-graph)
 ```
 
 **2. Dispatch code-reviewer subagent:**
@@ -36,8 +44,8 @@ Use Task tool with superpowers:code-reviewer type, fill template at `code-review
 **Placeholders:**
 - `{WHAT_WAS_IMPLEMENTED}` - What you just built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do
-- `{BASE_SHA}` - Starting commit
-- `{HEAD_SHA}` - Ending commit
+- `{BASE_ID}` - Starting change
+- `{HEAD_ID}` - Ending change
 - `{DESCRIPTION}` - Brief summary
 
 **3. Act on feedback:**
@@ -53,14 +61,14 @@ Use Task tool with superpowers:code-reviewer type, fill template at `code-review
 
 You: Let me request code review before proceeding.
 
-BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
-HEAD_SHA=$(git rev-parse HEAD)
+BASE_ID=$(jj log -r 'description("Task 1")' -T 'change_id' --no-graph | head -1)
+HEAD_ID=$(jj log -r @ -T 'change_id' --no-graph)
 
 [Dispatch superpowers:code-reviewer subagent]
   WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
   PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
-  BASE_SHA: a7981ec
-  HEAD_SHA: 3df7661
+  BASE_ID: kpqxywon
+  HEAD_ID: zzzphpky
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
 
 [Subagent returns]:

@@ -154,7 +154,7 @@ These changes address observed agent behavior where they rationalize around skil
 - Added Phase 4: Design Documentation to brainstorming skill
 - Design documents now written to `docs/plans/YYYY-MM-DD-<topic>-design.md` before implementation
 - Restores functionality from original brainstorming command that was lost during skill conversion
-- Documents written before worktree setup and implementation planning
+- Documents written before workspace setup and implementation planning
 - Tested with subagent to verify compliance under time pressure
 
 ### Breaking Changes

@@ -369,12 +369,11 @@ echo "Test 5: Testing checkForUpdates..."
 # Create a test git repo
 mkdir -p "$TEST_HOME/test-repo"
 cd "$TEST_HOME/test-repo"
-git init --quiet
+jj git init --quiet
 git config user.email "test@test.com"
 git config user.name "Test"
 echo "test" > file.txt
-git add file.txt
-git commit -m "initial" --quiet
+jj commit -m "initial" --quiet
 cd "$SCRIPT_DIR"
 
 # Test checkForUpdates on repo without remote (should return false, not error)
@@ -383,7 +382,7 @@ const { execSync } = require('child_process');
 
 function checkForUpdates(repoDir) {
     try {
-        const output = execSync('git fetch origin && git status --porcelain=v1 --branch', {
+        const output = execSync('jj git fetch --remote origin && git status --porcelain=v1 --branch', {
             cwd: repoDir,
             timeout: 3000,
             encoding: 'utf8',

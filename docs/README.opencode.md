@@ -17,6 +17,7 @@ Clone https://github.com/obra/superpowers to ~/.config/opencode/superpowers, the
 - [OpenCode.ai](https://opencode.ai) installed
 - Node.js installed
 - Git installed
+- Jujutsu installed
 
 ### Installation Steps
 
@@ -24,7 +25,7 @@ Clone https://github.com/obra/superpowers to ~/.config/opencode/superpowers, the
 
 ```bash
 mkdir -p ~/.config/opencode/superpowers
-git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
+jj git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
 ```
 
 #### 2. Register the Plugin
@@ -168,7 +169,7 @@ Skills written for Claude Code are automatically adapted for OpenCode. The plugi
 - `stripFrontmatter()` - Remove metadata from content
 - `findSkillsInDir()` - Recursive skill discovery
 - `resolveSkillPath()` - Skill resolution with shadowing
-- `checkForUpdates()` - Git update detection
+- `checkForUpdates()` - jj update detection
 
 This module is shared between OpenCode and Codex implementations for code reuse.
 
@@ -176,7 +177,7 @@ This module is shared between OpenCode and Codex implementations for code reuse.
 
 ```bash
 cd ~/.config/opencode/superpowers
-git pull
+jj git fetch && jj rebase -d main@origin
 ```
 
 Restart OpenCode to load the updates.

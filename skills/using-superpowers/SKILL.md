@@ -36,7 +36,7 @@ Before responding to ANY user message, you MUST complete this checklist:
 If you catch yourself thinking ANY of these thoughts, STOP. You are rationalizing. Check for and use the skill.
 
 - "This is just a simple question" → WRONG. Questions are tasks. Check for skills.
-- "I can check git/files quickly" → WRONG. Files don't have conversation context. Check for skills.
+- "I can check jj/git/files quickly" → WRONG. Files don't have conversation context. Check for skills.
 - "Let me gather information first" → WRONG. Skills tell you HOW to gather information. Check for skills.
 - "This doesn't need a formal skill" → WRONG. If a skill exists for it, use it.
 - "I remember this skill" → WRONG. Skills evolve. Run the current version.

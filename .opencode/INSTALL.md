@@ -12,7 +12,7 @@
 
 ```bash
 mkdir -p ~/.config/opencode/superpowers
-git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
+jj git clone https://github.com/obra/superpowers.git ~/.config/opencode/superpowers
 ```
 
 ### 2. Register the Plugin
@@ -104,7 +104,7 @@ description: Use when [condition] - [what it does]
 
 ```bash
 cd ~/.config/opencode/superpowers
-git pull
+jj git fetch && jj rebase -d main@origin
 ```
 
 ## Troubleshooting

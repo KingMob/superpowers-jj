@@ -23,7 +23,7 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 
 ```bash
 mkdir -p ~/.codex/superpowers
-git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
+jj git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
 ```
 
 #### 2. Install Bootstrap
@@ -115,7 +115,7 @@ Skills written for Claude Code are adapted for Codex with these mappings:
 
 ```bash
 cd ~/.codex/superpowers
-git pull
+jj git fetch && jj rebase -d main@origin
 ```
 
 ## Troubleshooting

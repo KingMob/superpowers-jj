@@ -67,8 +67,8 @@ Task tool (superpowers:code-reviewer):
 
   WHAT_WAS_IMPLEMENTED: [from subagent's report]
   PLAN_OR_REQUIREMENTS: Task N from [plan-file]
-  BASE_SHA: [commit before task]
-  HEAD_SHA: [current commit]
+  BASE_CHANGE_ID: [change before task]
+  HEAD_CHANGE_ID: [current change]
   DESCRIPTION: [task summary]
 ```
 
@@ -118,7 +118,7 @@ Task 1: Hook installation script
 [Dispatch implementation subagent]
 Subagent: Implemented install-hook with tests, 5/5 passing
 
-[Get git SHAs, dispatch code-reviewer]
+[Get jj change IDs, dispatch code-reviewer]
 Reviewer: Strengths: Good test coverage. Issues: None. Ready.
 
 [Mark Task 1 complete]
