@@ -32,7 +32,7 @@ Read the introduction: [Superpowers for Claude Code](https://blog.fsck.com/2025/
 ```bash
 # In Claude Code
 /plugin marketplace add KingMob/superpowers-jj-marketplace
-/plugin install superpowers@superpowers-jj-marketplace
+/plugin install superpowers-jj@superpowers-jj-marketplace
 ```
 
 ### Verify Installation
