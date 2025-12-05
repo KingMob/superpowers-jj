@@ -115,7 +115,7 @@ Skills written for Claude Code are adapted for Codex with these mappings:
 
 ```bash
 cd ~/.codex/superpowers
-jj git fetch && jj rebase -d main@origin
+jj git fetch && jj rebase --onto main@origin
 ```
 
 ## Troubleshooting

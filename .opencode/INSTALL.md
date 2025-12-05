@@ -104,7 +104,7 @@ description: Use when [condition] - [what it does]
 
 ```bash
 cd ~/.config/opencode/superpowers
-jj git fetch && jj rebase -d main@origin
+jj git fetch && jj rebase --onto main@origin
 ```
 
 ## Troubleshooting

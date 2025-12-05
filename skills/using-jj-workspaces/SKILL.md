@@ -27,10 +27,10 @@ ls -d workspaces 2>/dev/null      # Alternative
 
 **If found:** Use that directory. If both exist, `.workspaces` wins.
 
-### 2. Check CLAUDE.md
+### 2. Check CLAUDE.md and AGENTS.md
 
 ```bash
-grep -i "workspace.*director" CLAUDE.md 2>/dev/null
+grep -i "workspace.*director" CLAUDE.md AGENTS.md 2>/dev/null
 ```
 
 **If preference specified:** Use it without asking.
@@ -148,7 +148,7 @@ Ready to implement <feature-name>
 | `.workspaces/` exists | Use it (verify .gitignore) |
 | `workspaces/` exists | Use it (verify .gitignore) |
 | Both exist | Use `.workspaces/` |
-| Neither exists | Check CLAUDE.md → Ask user |
+| Neither exists | Check CLAUDE.md and AGENTS.md → Ask user |
 | Directory not in .gitignore | Add it immediately + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |

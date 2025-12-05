@@ -177,7 +177,7 @@ This module is shared between OpenCode and Codex implementations for code reuse.
 
 ```bash
 cd ~/.config/opencode/superpowers
-jj git fetch && jj rebase -d main@origin
+jj git fetch && jj rebase --onto main@origin
 ```
 
 Restart OpenCode to load the updates.

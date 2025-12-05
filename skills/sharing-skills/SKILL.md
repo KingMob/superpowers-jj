@@ -174,7 +174,7 @@ jj git push --remote origin --deleted
 - Consider different skill name or coordinate with the skill's maintainer
 
 **PR merge conflicts**
-- Rebase on latest upstream: `jj git fetch --remote upstream` then `jj rebase -d upstream/main`
+- Rebase on latest upstream: `jj git fetch --remote upstream` then `jj rebase --onto main@upstream`
 - Resolve conflicts
 - Push rebased bookmark: `jj git push --bookmark your-bookmark`
 
